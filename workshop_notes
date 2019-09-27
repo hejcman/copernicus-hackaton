@@ -1,0 +1,57 @@
+
+COPERNICUS HACKATON
+===================
+
+Sentinel 1
+    - radar technology
+    - works even in cloudy weather
+    - pair satelite, revisit time is 2-3 days
+    - all globe sensing
+    - detecting surface and moisture levels
+    - 10 to 20 meters resolution
+
+Sentinel 2
+    - visual spectrum, IR bands
+    - good to recognize invisible features (vegetation, ...)
+    - pair satellite, revisit time 3-5 days
+    - 1px is 10x10 meters (not all bands are in this resolution, some are also 20x20 or 60x60)
+    - most data is from 2016 onwards
+    - doesn't see through the clouds
+    - Brno -> only ~40 images a year
+
+Sentinel 3
+    - meant for ocean monitoring
+    - the resolution is very low
+    - 100s of meters of kilometers (useful only for really large areas)
+
+Sentinel 5p
+    - working from 2018
+    - monitoring the atmosphere
+    - these measurements are usually done on the ground, this satellite allows us to have a larger area of measurement
+    - the resolution is "horrible" -> 7x7km (one band is 3x3km)
+    - national scale data
+
+Sentinel 4 & 6 are not in space...
+
+General
+    - This data is spatial, it needs to have some coordinates. Otherwise, it is difficult to place on the surface.
+    - The satelites are not able to measure physical space. We just see reflected energies in certain wavelengths.
+    - vegetation index -> red and near infrared spectrum, used for vegetation
+    - others are water or moisture index
+
+Data sources
+    - Sentinel Hub (yes please)
+    - AWS data (cloud computing) -> registry.opendata.aws
+    - Copernicus Open Access Hub (most difficult to work with) -> very resource intensive
+    - other (eg. NASA LandSat, ...) -> LandSat is better for temperature monitoring (100x100m resolution)
+
+Sentinel Hub
+    - Custom scripts (custom-scripts.sentinel-hub.com)
+    - REST API (apps.sentinel-hub.com/eo-browser) -> sentinelhub-py, eo-learn
+    - EO Browser
+
+Tools
+    - QGIS (no programming, working with images)
+    - EO Browser
+
+
