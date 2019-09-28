@@ -1,9 +1,9 @@
-import datetime
-import numpy as np
+#!/usr/bin/env python3
+
 import timeit
 import matplotlib.pyplot as plt
+import geocoder
 
-import reverse_geocoder as rg
 from sentinelhub import *
 
 
@@ -45,7 +45,7 @@ for x in range(0, 10, 1):
                                         instance_id='0d1f2199-b4b9-4bad-b88b-8b2423e57b93')
 
     # TODO: Only one satellite image per day
-    print("Finding %d%% cloud coverage  images..." % (x*10))
+    print("Finding %2d%% cloud coverage  images..." % (x*10))
     data = wms_true_color_request.get_dates()
     length_now = len(data)
     # print(data)
@@ -54,11 +54,14 @@ for x in range(0, 10, 1):
 
 print("\n")
 
-# results = rg.search((house_coords[1], house_coords[0]))
+results = geocoder.mapquest([house_coords[1], house_coords[0]], method='reverse', key='	e9WV6aVAz4HJtjwDhjZz72OhjpnAcHHk')
+print(results.country)
+print(results.city)
+print(results.street)
 
 # print(results)
 print(clouds)
-print("Total days: %02d" % sum(clouds))
+print("Total days: %d" % sum(clouds))
 print("Days with <50%% cloud coverage: %d" % sum(clouds[0:4]))
 
 stop = timeit.default_timer()
