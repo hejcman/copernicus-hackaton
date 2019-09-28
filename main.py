@@ -1,33 +1,67 @@
 import datetime
 import numpy as np
+import timeit
 import matplotlib.pyplot as plt
 
+import reverse_geocoder as rg
 from sentinelhub import *
 
 
-def plot_image(image, factor=1):
+def plot_img(img):
     """
-    Utility function for plotting RGB images.
+    plots the map (duh)
     """
-    fig = plt.subplots(nrows=1, ncols=1, figsize=(15, 7))
+    plt.figure()
+    plt.imshow(img)
+    plt.show()
 
-    if np.issubdtype(image.dtype, np.floating):
-        plt.imshow(np.minimum(image * factor, 1))
-    else:
-        plt.imshow(image)
+start = timeit.default_timer()
 
-
-coords_wgs84 = [16.55, 49.23, 16.69, 49.14]
+house_coords = [16.5965161, 49.2266208]
+coords_wgs84 = [house_coords[0]+0.05,
+                house_coords[1]+0.05,
+                house_coords[0]-0.05,
+                house_coords[1]-0.05]
 
 wms_true_color_request = WmsRequest(layer='TRUE_COLOR',
                                     bbox=BBox(bbox=coords_wgs84, crs=CRS.WGS84),
-                                    width=960,
+                                    width=1000, height=1000,
                                     time='latest',
-                                    maxcc=0.10,
+                                    maxcc=0,
                                     instance_id='0d1f2199-b4b9-4bad-b88b-8b2423e57b93')
 
 wms_true_color_img = wms_true_color_request.get_data()
 
-plt.figure()
-plt.imshow(wms_true_color_img[-1])
-plt.show()
+clouds = []
+
+length_prev = 0
+
+for x in range(0, 10, 1):
+    wms_true_color_request = WmsRequest(layer='TRUE_COLOR',
+                                        bbox=BBox(bbox=coords_wgs84, crs=CRS.WGS84),
+                                        width=1000, height=1000,
+                                        time=('2018-09-28', '2019-09-28'),
+                                        maxcc=x/10,
+                                        instance_id='0d1f2199-b4b9-4bad-b88b-8b2423e57b93')
+
+    # TODO: Only one satellite image per day
+    print("Finding %d%% cloud coverage  images..." % (x*10))
+    data = wms_true_color_request.get_dates()
+    length_now = len(data)
+    # print(data)
+    clouds.append(length_now-length_prev)
+    length_prev = length_now
+
+print("\n")
+
+# results = rg.search((house_coords[1], house_coords[0]))
+
+# print(results)
+print(clouds)
+print("Total days: %02d" % sum(clouds))
+print("Days with <50%% cloud coverage: %d" % sum(clouds[0:4]))
+
+stop = timeit.default_timer()
+print('Time: ', stop - start)  
+
+plot_img(wms_true_color_img[-1])
