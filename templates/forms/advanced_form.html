@@ -35,6 +35,20 @@
                 {{ wtf.form_field(form.yearly_spending) }}
                 {{ wtf.form_field(form.yearly_usage)    }}
             </dl>
+        <div class="modal-body row">
+            <div class="col-md-6">
+                <img src="http://www.ceska-solarni.cz/images/pics/orientace_dum_fve.jpg">
+            </div>
+            <div class="col-md-6">
+                {{ wtf.form_field(form.roof_50)  }}
+                {{ wtf.form_field(form.roof_65)  }}
+                {{ wtf.form_field(form.roof_70)  }}
+                {{ wtf.form_field(form.roof_75)  }}
+                {{ wtf.form_field(form.roof_90)  }}
+                {{ wtf.form_field(form.roof_95)  }}
+                {{ wtf.form_field(form.roof_100) }}
+            </div>
+        </div>
         <p>
             <input class="btn btn-primary" type="submit" value="Calculate!" data-toggle="modal" data-target="#exampleModalCenter">
         </p>

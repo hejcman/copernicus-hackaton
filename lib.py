@@ -3,8 +3,15 @@
 import timeit
 import matplotlib.pyplot as plt
 import geocoder
+from suntime import Sun
+from datetime import datetime, timedelta
+import csv
 
-from sentinelhub import WmsRequest, BBox, CRS
+from sentinelhub import WmsRequest, BBox, CRS, WcsRequest
+
+
+sunlight_data = [[]]
+
 
 def plot_img(img):
     """
@@ -40,6 +47,42 @@ def get_bounding_box(coords=[16.5965161, 49.2266208], area='medium'):
     return BBox(bbox=coords_wgs84, crs=CRS.WGS84)
 
 
+def get_sunlight_data(bbox, center=[16.5965161, 49.2266208], start_time='2016-09-28', end_time='2019-09-28'):
+
+    sun = Sun(center[1], center[0])
+    
+    for cc in range(0, 11, 1):
+        wms_true_color_request = WmsRequest(layer='TRUE_COLOR',
+                                    bbox=bbox,
+                                    width=1000, height=1000,
+                                    time=(start_time, end_time),
+                                    maxcc=cc/10,
+                                    instance_id='0d1f2199-b4b9-4bad-b88b-8b2423e57b93')
+
+        data = wms_true_color_request.get_dates()
+
+        for date in data:
+            sunrise = sun.get_sunrise_time(date)
+            sunset  = sun.get_sunset_time(date)
+
+            sunrise_f = "%02d:%02d" % (sunrise.hour, sunrise.minute)
+            sunset_f = "%02d:%02d" % (sunset.hour, sunset.minute)
+            
+            # print(sunrise_f)
+            # print(sunset_f)
+            sunlight_data.append([date, sunrise_f, sunset_f, "%d%%" % (cc*10)])
+
+    # print(sunlight_data)
+    return sunlight_data
+
+
+def write_to_csv(data):
+    with open('some.csv', 'w+') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Timestamp", "Sunrise", "Sunset", "Cloud Coverage"])
+        writer.writerows(data)
+
+
 def get_avg_cloud_cover(bbox, start_time='2018-09-28', end_time='2019-09-28', verbose=True):
     """
     Finds the number of days for each cloud coverage from 0 to 100%, and returns it as a list.
@@ -68,7 +111,6 @@ def get_avg_cloud_cover(bbox, start_time='2018-09-28', end_time='2019-09-28', ve
         clouds.append(length_now-length_prev)
         length_prev = length_now
 
-    # FIXME:
     # Get mean cloud cover
     if verbose:
         avg_cld = 0
@@ -90,7 +132,6 @@ def get_avg_cloud_cover(bbox, start_time='2018-09-28', end_time='2019-09-28', ve
     return clouds
 
 
-
 def print_address(coords=[16.5965161, 49.2266208]):
     results = geocoder.mapquest(
         [coords[1], coords[0]], method='reverse', key='e9WV6aVAz4HJtjwDhjZz72OhjpnAcHHk')
@@ -98,13 +139,19 @@ def print_address(coords=[16.5965161, 49.2266208]):
     print("City:    %s" % results.city)
 
 
+def get_days(bbox, start_time, end_time):
+    wms_true_color_request = WmsRequest(layer='TRUE_COLOR',
+                                        bbox=bbox,
+                                        width=1500, height=1500,
+                                        time=(start_time, end_time),
+                                        instance_id='0d1f2199-b4b9-4bad-b88b-8b2423e57b93')
+    return wms_true_color_request.get_dates()
 
 
 def get_coords(address):
     results = geocoder.mapquest(address, key='e9WV6aVAz4HJtjwDhjZz72OhjpnAcHHk')
     print([results.lng, results.lat])
-    return [results.lat, results.lng]
-
+    return [results.lng, results.lat]
 
 
 def get_location_img(bbox):
@@ -119,11 +166,26 @@ def get_location_img(bbox):
     plot_img(wms_true_color_img[-1])
 
 
+def get_cloud_data(bbox, start_time='2018-09-28', end_time='2019-09-28'):
+    wms_true_color_request = WmsRequest(layer='CLOUD_LAYER',
+                                        bbox=bbox,
+                                        width=1000, height=1000,
+                                        time=(start_time, end_time),
+                                        maxcc=1,
+                                        instance_id='0d1f2199-b4b9-4bad-b88b-8b2423e57b93')
+
+    data = wms_true_color_request.get_data()
+    print(data)
+
+
 if __name__ == "__main__":
     START = timeit.default_timer()
 
-    get_avg_cloud_cover(get_bounding_box([134.48, 58.37], 'small'))
-    get_avg_cloud_cover(get_bounding_box([114.16, 38.38], 'small'))
+    # get_avg_cloud_cover(get_bounding_box([134.48, 58.37], 'small'))
+    # get_avg_cloud_cover(get_bounding_box([114.16, 38.38], 'small'))
+    # write_to_csv(get_sunlight_data(get_bounding_box()))
+
+    get_cloud_data(get_bounding_box())
 
     STOP = timeit.default_timer()
     print('Runtime: ', STOP - START)
