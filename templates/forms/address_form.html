@@ -1,0 +1,48 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block body %}
+{% include 'includes/_navbar.html' %}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            ...
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- <form method=post onsubmit="alert('The message is being processed. You will be redirected.');"> -->
+    <form method=post>
+        <h2> Your Address: </h2>
+           <dl>
+                {{ wtf.form_field(form.address)         }}
+                {{ wtf.form_field(form.size)            }}
+                {{ wtf.form_field(form.yearly_spending) }}
+                {{ wtf.form_field(form.yearly_usage)    }}
+            </dl>
+        <!-- <h4> How large do you want the scanned area to be? </h4>
+            <input type="radio" name="options" id="option1" value="small"> Small </input><br>
+            <input type="radio" name="options" id="option2" value="medium"> Medium </input><br>
+            <input type="radio" name="options" id="option3" value="large"> Large </input><br> -->
+        <p>
+            <input class="btn btn-primary" type="submit" value="Calculate!" data-toggle="modal" data-target="#exampleModalCenter">
+        </p>
+    </form>
+</div>
+
+{% endblock %}

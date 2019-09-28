@@ -1,0 +1,26 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+{% from "includes/_formhelpers.html" import render_field %}
+<form method=post onsubmit="alert('The message is being processed. You will be redirected.');">
+    <h2> Your Login Details: </h2>
+       <dl>
+            {{ render_field(form.user_email) }}
+            {{ render_field(form.password_email) }}
+            {{ render_field(form.smtp_server) }}
+            {{ render_field(form.smtp_port) }}
+       </dl>
+    <h2> Recepient Details: </h2>
+        <dl>
+            {{ render_field(form.recipient_email) }}
+        </dl>
+    <h2>Message Details</h2>
+        <dl>
+            {{ render_field(form.number_of_emails) }}
+            {{ render_field(form.time_interval_between_emails) }}
+            {{ render_field(form.email_subject) }}
+            {{ render_field(form.email_body) }}
+        </dl>
+    <p><input type="submit" value=Send Message>
+</form>
+{% endblock %}

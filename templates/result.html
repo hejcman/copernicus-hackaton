@@ -1,0 +1,13 @@
+{% extends 'layout.html' %}
+
+<script type="text/javascript" src="http://kozea.github.com/pygal.js/javascripts/svg.jquery.js"></script>
+<script type="text/javascript" src="http://kozea.github.com/pygal.js/javascripts/pygal-tooltips.js"></script>
+{{mymap.js}}
+
+{% block body %}
+
+{{ bar_chart.render()|safe }}
+
+{{mymap.html}}
+
+{% endblock %}

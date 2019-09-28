@@ -6,7 +6,6 @@ import geocoder
 
 from sentinelhub import WmsRequest, BBox, CRS
 
-
 def plot_img(img):
     """
     plots the map (duh)
@@ -35,6 +34,8 @@ def get_bounding_box(coords=[16.5965161, 49.2266208], area='medium'):
                     coords[1]+delta,
                     coords[0]-delta,
                     coords[1]-delta]
+
+    print(coords_wgs84)
 
     return BBox(bbox=coords_wgs84, crs=CRS.WGS84)
 
@@ -67,6 +68,7 @@ def get_avg_cloud_cover(bbox, start_time='2018-09-28', end_time='2019-09-28', ve
         clouds.append(length_now-length_prev)
         length_prev = length_now
 
+    # FIXME:
     # Get mean cloud cover
     if verbose:
         avg_cld = 0
@@ -88,11 +90,21 @@ def get_avg_cloud_cover(bbox, start_time='2018-09-28', end_time='2019-09-28', ve
     return clouds
 
 
+
 def print_address(coords=[16.5965161, 49.2266208]):
     results = geocoder.mapquest(
-        [coords[1], coords[0]], method='reverse', key='	e9WV6aVAz4HJtjwDhjZz72OhjpnAcHHk')
+        [coords[1], coords[0]], method='reverse', key='e9WV6aVAz4HJtjwDhjZz72OhjpnAcHHk')
     print("Country: %s" % results.country)
     print("City:    %s" % results.city)
+
+
+
+
+def get_coords(address):
+    results = geocoder.mapquest(address, key='e9WV6aVAz4HJtjwDhjZz72OhjpnAcHHk')
+    print([results.lng, results.lat])
+    return [results.lat, results.lng]
+
 
 
 def get_location_img(bbox):
@@ -110,7 +122,8 @@ def get_location_img(bbox):
 if __name__ == "__main__":
     START = timeit.default_timer()
 
-    get_avg_cloud_cover(get_bounding_box())
+    get_avg_cloud_cover(get_bounding_box([134.48, 58.37], 'small'))
+    get_avg_cloud_cover(get_bounding_box([114.16, 38.38], 'small'))
 
     STOP = timeit.default_timer()
     print('Runtime: ', STOP - START)
