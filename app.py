@@ -34,6 +34,10 @@ from flask_bootstrap import Bootstrap
 from flask_googlemaps import GoogleMaps
 from flask_googlemaps import Map
 
+from dateutil.relativedelta import relativedelta
+import datetime
+
+
 
 app = Flask(__name__)
 Bootstrap(app)
@@ -87,13 +91,17 @@ def user_form_renderer():
         bar_chart.x_labels = ["0%", "10%", "20%", "30%",
                               "40%", "50%", "60%", "70%", "80%", "90%", "100%"]
 
+        now = datetime.datetime.now()
+
         bar_chart.add("Clouds", lib.get_avg_cloud_cover(
             lib.get_bounding_box(
                 lib.get_coords(
                     address_form.address.data),
                 address_form.size.data
             ),
-            verbose=False))
+            verbose=False,
+            start_time=now-relativedelta(years=3),
+            end_time=now))
 
         bar_chart.show_legend = False
 
@@ -104,10 +112,13 @@ def user_form_renderer():
             markers=[(37.4419, -122.1419)]
         )
 
-        return render_template('result.html', title="TITLE", bar_chart=bar_chart, mymap=mymap)
+        return render_template('result.html', 
+                               heading_text="TITLE", 
+                               further_info="INFO",
+                               bar_chart=bar_chart,
+                               mymap=mymap)
 
     return render_template('/forms/address_form.html', form=address_form)
-
 
 
 @app.route('/forms/advanced_form', methods=['GET', 'POST'])
@@ -120,6 +131,8 @@ def advanced_form_renderer():
         print(advanced_form.size.data)
         print(advanced_form.yearly_usage.data)
         print(advanced_form.yearly_spending.data)
+
+        print(advanced_form.start_point.data)
         print(advanced_form.roof_50.data)
         print(advanced_form.roof_65.data)
         print(advanced_form.roof_70.data)
@@ -146,6 +159,8 @@ def advanced_form_renderer():
                     advanced_form.address.data),
                 advanced_form.size.data
             ),
+            start_time=advanced_form.start_point.data,
+            end_time=advanced_form.end_point.data,
             verbose=False))
 
         bar_chart.show_legend = False
@@ -157,9 +172,19 @@ def advanced_form_renderer():
             markers=[(37.4419, -122.1419)]
         )
 
-        return render_template('result.html', title="TITLE", sun_days=lib.get_sun_time(datetime.datetime('2018-09-28')) , bar_chart=bar_chart, mymap=mymap)
+        return render_template('result.html',
+                               heading_text="THIS IS A TEST",
+                               further_info="FURTHER INFO",
+                               title="TITLE",
+                               bar_chart=bar_chart,
+                               mymap=mymap)
 
     return render_template('/forms/advanced_form.html', form=advanced_form)
+
+
+def calculate_savings():
+    # TODO:
+    pass
 
 
 if __name__ == '__main__':

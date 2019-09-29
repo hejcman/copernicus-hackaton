@@ -8,6 +8,7 @@ from wtforms import PasswordField
 from wtforms import StringField
 from wtforms import validators
 from wtforms import SelectField
+from wtforms import DateField
 
 
 class AdvancedForm(Form):
@@ -24,6 +25,9 @@ class AdvancedForm(Form):
 
     yearly_usage = StringField("How much electricity do you roughly use per year? (kWh)", [
         validators.Length(min=1, max=10), validators.DataRequired()])
+
+    start_point = DateField("Start date for satellite data analysis (yyyy-mm-dd):", [validators.DataRequired()])
+    end_point = DateField("End date for satellite data analysis (yyyy-mm-dd):", [validators.DataRequired()])
 
     roof_50 = StringField('Roof area with 50% efficiency:')
     roof_65 = StringField('Roof area with 65% efficiency:')

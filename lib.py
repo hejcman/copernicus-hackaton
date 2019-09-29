@@ -22,6 +22,13 @@ def plot_img(img):
     plt.show()
 
 
+def write_to_csv(data):
+    with open('some.csv', 'w+') as f:
+        writer = csv.writer(f)
+        writer.writerow(["Timestamp", "Sunrise", "Sunset", "Cloud Coverage"])
+        writer.writerows(data)
+
+
 def get_bounding_box(coords=[16.5965161, 49.2266208], area='medium'):
     """
     Calculates the top left and bottom right coordinates of the bounding box based on the center
@@ -70,17 +77,11 @@ def get_sunlight_data(bbox, center=[16.5965161, 49.2266208], start_time='2016-09
             
             # print(sunrise_f)
             # print(sunset_f)
+
             sunlight_data.append([date, sunrise_f, sunset_f, "%d%%" % (cc*10)])
 
     # print(sunlight_data)
     return sunlight_data
-
-
-def write_to_csv(data):
-    with open('some.csv', 'w+') as f:
-        writer = csv.writer(f)
-        writer.writerow(["Timestamp", "Sunrise", "Sunset", "Cloud Coverage"])
-        writer.writerows(data)
 
 
 def get_avg_cloud_cover(bbox, start_time='2018-09-28', end_time='2019-09-28', verbose=True):
