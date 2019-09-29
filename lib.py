@@ -9,7 +9,6 @@ import csv
 
 from sentinelhub import WmsRequest, BBox, CRS, WcsRequest
 
-
 sunlight_data = [[]]
 
 
@@ -80,9 +79,27 @@ def get_sunlight_data(bbox, center=[16.5965161, 49.2266208], start_time='2016-09
 
             sunlight_data.append([date, sunrise_f, sunset_f, "%d%%" % (cc*10)])
 
-    # print(sunlight_data)
-    return sunlight_data
 
+    #print(sunlight_data)
+    return removeDuplicates(sunlight_data)
+
+# DONT TOUCH, IT JUST WORKS! LUKÁŚI PLS, DON'T DO IT
+def removeDuplicates(L):
+    uniqueList = []
+    for elem in L:
+        if elem == []: 
+            continue
+        if uniqueList == []:
+            uniqueList.append(elem)
+        else:
+            dup=False
+            for i in uniqueList:
+                if(elem[0] == i[0]):
+                    dup=True
+                    break
+            if(dup == False):
+                uniqueList.append(elem)
+    return uniqueList
 
 def get_avg_cloud_cover(bbox, start_time='2018-09-28', end_time='2019-09-28', verbose=True):
     """
@@ -184,9 +201,8 @@ if __name__ == "__main__":
 
     # get_avg_cloud_cover(get_bounding_box([134.48, 58.37], 'small'))
     # get_avg_cloud_cover(get_bounding_box([114.16, 38.38], 'small'))
-    # write_to_csv(get_sunlight_data(get_bounding_box()))
-
-    get_cloud_data(get_bounding_box())
+    write_to_csv(get_sunlight_data(get_bounding_box()))
+    #get_cloud_data(get_bounding_box())
 
     STOP = timeit.default_timer()
     print('Runtime: ', STOP - START)
