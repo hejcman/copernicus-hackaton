@@ -6,6 +6,7 @@ import geocoder
 from suntime import Sun
 from datetime import datetime, timedelta
 import csv
+import math
 
 from sentinelhub import WmsRequest, BBox, CRS, WcsRequest
 
@@ -71,20 +72,26 @@ def get_sunlight_data(bbox, center=[16.5965161, 49.2266208], start_time='2016-09
             sunrise = sun.get_sunrise_time(date)
             sunset  = sun.get_sunset_time(date)
 
+            suntime=(sunset - sunrise)
+            suntime_hour=(sunset.hour - sunrise.hour)
+            suntime_minute=(sunset.minute - sunrise.minute)
+
             sunrise_f = "%02d:%02d" % (sunrise.hour, sunrise.minute)
             sunset_f = "%02d:%02d" % (sunset.hour, sunset.minute)
             
-            # print(sunrise_f)
+            #print(sunrise_f)
             # print(sunset_f)
+            suntime_number_f = '{:0>5.02f}'.format(int(suntime_hour) + round(int(suntime_minute)/60, 2))
 
-            sunlight_data.append([date, sunrise_f, sunset_f, "%d%%" % (cc*10)])
+            sunlight_data.append([date, sunrise_f, sunset_f, "%d%%" % (cc*10), suntime, suntime_number_f])
 
 
     #print(sunlight_data)
-    return removeDuplicates(sunlight_data)
+    return remove_duplicates(sunlight_data)
+
 
 # DONT TOUCH, IT JUST WORKS! LUKÁŚI PLS, DON'T DO IT
-def removeDuplicates(L):
+def remove_duplicates(L):
     uniqueList = []
     for elem in L:
         if elem == []: 
@@ -203,6 +210,8 @@ if __name__ == "__main__":
     # get_avg_cloud_cover(get_bounding_box([114.16, 38.38], 'small'))
     write_to_csv(get_sunlight_data(get_bounding_box()))
     #get_cloud_data(get_bounding_box())
+
+
 
     STOP = timeit.default_timer()
     print('Runtime: ', STOP - START)
