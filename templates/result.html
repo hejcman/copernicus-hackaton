@@ -2,7 +2,6 @@
 
 <script type="text/javascript" src="http://kozea.github.com/pygal.js/javascripts/svg.jquery.js"></script>
 <script type="text/javascript" src="http://kozea.github.com/pygal.js/javascripts/pygal-tooltips.js"></script>
-{{mymap.js}}
 
 {% block body %}
 
@@ -11,9 +10,6 @@
         <h1 class="display-4">
             {{ heading_text|safe }}
         </h1>
-        <p class="lead">
-            {{ further_info|safe }}
-        </p>
     </div>
 </div>
 
@@ -21,7 +17,8 @@
 
     <div class="col-md-4 col-sm-6 hero-feature">
         <div class="thumbnail">
-            <img src="http://solarni-panely.cz/var/ezwebin_site/storage/images/e-shop/fotovoltaicke-panely/fotovoltaicky-solarni-panel-samsung-s-energy-sm-250-pc8-250-wp/7719-13-cze-CZ/fotovoltaicky_solarni_panel_samsung_s_energy_sm_250_pc8_250_wp.jpg" alt=""  class="img-thumbnail" style="width: 200px; height: 200px;">
+            <img src="http://solarni-panely.cz/var/ezwebin_site/storage/images/e-shop/fotovoltaicke-panely/fotovoltaicky-solarni-panel-samsung-s-energy-sm-250-pc8-250-wp/7719-13-cze-CZ/fotovoltaicky_solarni_panel_samsung_s_energy_sm_250_pc8_250_wp.jpg"
+                alt="" class="img-thumbnail" style="width: 200px; height: 200px;">
             <div class="caption">
                 <h4>Samsung S-energy SM-250PC8, 250 Wp</h4>
                 <p>
@@ -35,13 +32,13 @@
 
     <div class="col-md-4 col-sm-6 hero-feature">
         <div class="thumbnail">
-            <img src="http://solarni-panely.cz/var/ezwebin_site/storage/images/e-shop/fotovoltaicke-panely/fotovoltaicky-solarni-panel-avancis-powermax-130-130-wp/11878-16-cze-CZ/fotovoltaicky_solarni_panel_avancis_powermax_130_130_wp.jpg" alt="" class="img-thumbnail" style="width: 200px; height: 200px;">
+            <img src="http://solarni-panely.cz/var/ezwebin_site/storage/images/e-shop/fotovoltaicke-panely/fotovoltaicky-solarni-panel-avancis-powermax-130-130-wp/11878-16-cze-CZ/fotovoltaicky_solarni_panel_avancis_powermax_130_130_wp.jpg"
+                alt="" class="img-thumbnail" style="width: 200px; height: 200px;">
             <div class="caption">
                 <h4>Avancis PowerMax 130, 130 Wp</h4>
                 <p>
-                    <a
-                        href="http://solarni-panely.cz/katalog-produktu/fotovoltaicke-panely/fotovoltaicky-solarni-panel-avancis-powermax-130-130-wp"
-                        class="btn btn-primary"> 
+                    <a href="http://solarni-panely.cz/katalog-produktu/fotovoltaicke-panely/fotovoltaicky-solarni-panel-avancis-powermax-130-130-wp"
+                        class="btn btn-primary">
                         More Info
                     </a>
                 </p>
@@ -51,11 +48,13 @@
 
     <div class="col-md-4 col-sm-6 hero-feature">
         <div class="thumbnail">
-            <img src="http://solarni-panely.cz/var/ezwebin_site/storage/images/e-shop/fotovoltaicke-panely/fotovoltaicky-solarni-panel-yingli-yl-265c-265-wp/31915-22-cze-CZ/fotovoltaicky_solarni_panel_yingli_yl_265c_265_wp.gif" alt="" class="img-thumbnail" style="width: 200px; height: 200px;">
+            <img src="http://solarni-panely.cz/var/ezwebin_site/storage/images/e-shop/fotovoltaicke-panely/fotovoltaicky-solarni-panel-yingli-yl-265c-265-wp/31915-22-cze-CZ/fotovoltaicky_solarni_panel_yingli_yl_265c_265_wp.gif"
+                alt="" class="img-thumbnail" style="width: 200px; height: 200px;">
             <div class="caption">
                 <h4>Yingli YL 265C, 265 Wp</h4>
                 <p>
-                    <a href="http://solarni-panely.cz/katalog-produktu/fotovoltaicke-panely/fotovoltaicky-solarni-panel-yingli-yl-265c-265-wp" class="btn btn-primary">More info</a>
+                    <a href="http://solarni-panely.cz/katalog-produktu/fotovoltaicke-panely/fotovoltaicky-solarni-panel-yingli-yl-265c-265-wp"
+                        class="btn btn-primary">More info</a>
                 </p>
             </div>
         </div>
@@ -63,15 +62,9 @@
 
 </div>
 
-{{ bar_chart.render()|safe }}
+{{ bar_chart.render()|safe  }}
+{{ bar_chart2.render()|safe  }}
 
 {{ sunny_days }}
-
-{{mymap.html}}
-
-
-
-
-
 
 {% endblock %}

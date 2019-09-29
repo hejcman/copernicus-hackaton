@@ -32,22 +32,16 @@
            <dl>
                 {{ wtf.form_field(form.address)         }}
                 {{ wtf.form_field(form.size)            }}
-                {{ wtf.form_field(form.yearly_spending) }}
-                {{ wtf.form_field(form.yearly_usage)    }}
                 {{ wtf.form_field(form.start_point)     }}
-                {{ wtf.form_field(form.end_point)     }}
+                {{ wtf.form_field(form.end_point)       }}
             </dl>
         <div class="modal-body row">
             <div class="col-md-6">
-                <img src="http://www.ceska-solarni.cz/images/pics/orientace_dum_fve.jpg">
+                <img src="../../static/img/sunroof.png" height=550>
             </div>
             <div class="col-md-6">
-                {{ wtf.form_field(form.roof_50)  }}
-                {{ wtf.form_field(form.roof_65)  }}
-                {{ wtf.form_field(form.roof_70)  }}
                 {{ wtf.form_field(form.roof_75)  }}
                 {{ wtf.form_field(form.roof_90)  }}
-                {{ wtf.form_field(form.roof_95)  }}
                 {{ wtf.form_field(form.roof_100) }}
             </div>
         </div>
