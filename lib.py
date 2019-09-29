@@ -11,6 +11,10 @@ import math
 from sentinelhub import WmsRequest, BBox, CRS, WcsRequest
 
 sunlight_data = [[]]
+#DEFAULT_COORDS = [16.5965161, 49.2266208]
+DEFAULT_COORDS = [16.648082, 49.3471944]
+#50.1664889N, 14.4714228E
+
 
 
 def plot_img(img):
@@ -29,7 +33,7 @@ def write_to_csv(data):
         writer.writerows(data)
 
 
-def get_bounding_box(coords=[16.5965161, 49.2266208], area='medium'):
+def get_bounding_box(coords=DEFAULT_COORDS, area='medium'):
     """
     Calculates the top left and bottom right coordinates of the bounding box based on the center
     point supplied by the user. The only valid values for area are ('small', 'medium', 'large').
@@ -54,7 +58,7 @@ def get_bounding_box(coords=[16.5965161, 49.2266208], area='medium'):
     return BBox(bbox=coords_wgs84, crs=CRS.WGS84)
 
 
-def get_sunlight_data(bbox, center=[16.5965161, 49.2266208], start_time='2016-09-28', end_time='2019-09-28'):
+def get_sunlight_data(bbox, center=DEFAULT_COORDS, start_time='2016-09-28', end_time='2019-09-28'):
 
     sun = Sun(center[1], center[0])
     
@@ -81,13 +85,34 @@ def get_sunlight_data(bbox, center=[16.5965161, 49.2266208], start_time='2016-09
             
             #print(sunrise_f)
             # print(sunset_f)
-            suntime_number_f = '{:0>5.02f}'.format(int(suntime_hour) + round(int(suntime_minute)/60, 2))
+            suntime_number_uf = (int(suntime_hour) + round(int(suntime_minute)/60, 2))
+            suntime_number_f = '{:0>5.02f}'.format(suntime_number_uf)
 
-            sunlight_data.append([date, sunrise_f, sunset_f, "%d%%" % (cc*10), suntime, suntime_number_f])
+            #print("number: ", suntime_number_uf)
+            pw=(
+                (suntime_number_uf * 0.2 * 1)   +
+                (suntime_number_uf * 0.2 * 0.7) +
+                (suntime_number_uf * 0.3 * 0.4) +
+                (suntime_number_uf * 0.3 * 0.2)
+            )*1000
+
+            real_cc = cc/10
+            if(real_cc < 0.31):
+                kwh=pw*1
+            elif(real_cc >= 0.31 and real_cc < 0.71):
+                kwh=pw*0.6
+            elif(real_cc >= 0.71 and real_cc < 0.91):
+                kwh=pw*0.3
+            elif(real_cc >= 0.91):
+                kwh=pw*0.1
+            
+
+            sunlight_data.append([date, sunrise_f, sunset_f, "%d%%" % (cc*10), suntime, suntime_number_f, round(pw), round(kwh)])
 
 
     #print(sunlight_data)
     return remove_duplicates(sunlight_data)
+
 
 
 # DONT TOUCH, IT JUST WORKS! LUKÁŚI PLS, DON'T DO IT
