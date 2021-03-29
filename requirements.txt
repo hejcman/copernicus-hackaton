@@ -101,7 +101,7 @@ pydbus==0.6.0
 pyephem==3.7.6.0
 pygal==2.4.0
 pygeocoder==1.2.5
-Pygments==2.4.2
+Pygments==2.7.4
 PyGObject==3.34.0
 pyinotify==0.9.6
 pylint==2.3.1
